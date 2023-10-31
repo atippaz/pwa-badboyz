@@ -2,12 +2,14 @@
 // const cacheName = 'cacheweb';
 var CACHE_NAME = 'mywebcache';
 var urlsToCache = [
-    '/',
-    '/assets/',
-    '/assets/*',
+    // '/',
 
+    // '/assets/.*',
+
+    // './index.html',
     '/index.html',
-    '/icon.ico'
+
+    // '/icon.ico'
 ];
 
 self.addEventListener('install', function (event) {
