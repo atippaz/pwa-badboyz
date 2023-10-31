@@ -6,7 +6,7 @@ self.addEventListener('install', (event) => {
             return cache.addAll([
                 '/',
                 // '/index.html',
-                // '/app.js',
+                '/app.js',
                 // '/styles.css',
                 // เพิ่ม URL อื่น ๆ ที่คุณต้องการแคช
             ]);
