@@ -42,9 +42,9 @@ export default defineConfig({
       },
       manifest: {
         // กำหนดค่า manifest ของ PWA ที่คุณต้องการ
-        name: 'My App',
+        name: 'BadBoyz',
         description: 'my pwa',
-        short_name: 'My App',
+        short_name: 'BadBoyz',
         start_url: "/index.html",
         scope: "/",
         display: 'standalone',
@@ -52,9 +52,9 @@ export default defineConfig({
         theme_color: '#000000',
         icons: [
           {
-            src: '/public/icon.png',
-            sizes: '900x400',
-            type: 'image/png',
+            src: '/public/icon.ico',
+            sizes: '128x128',
+            type: 'image/x-icon',
           },
         ],
       },

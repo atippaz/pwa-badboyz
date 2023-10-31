@@ -1,6 +1,6 @@
 module.exports = {
     pwa: {
-        name: 'My App',
+        name: 'BadBoyz',
         themecolor: '#000000',
         mstilecolor: '#000000',
         applemobilewebappcapable: 'yes',
