@@ -6,12 +6,12 @@
                 <template v-slot:append-inner>
                     <div class="d-flex">
                         <v-icon class="click-btn" color="red" @click="() => {
-                                if (props.teamLimit > 1)
-                                    emits(
-                                        'update:teamLimit',
-                                        props.teamLimit - 1
-                                    )
-                            }
+                            if (props.teamLimit > 1)
+                                emits(
+                                    'update:teamLimit',
+                                    props.teamLimit - 1
+                                )
+                        }
                             ">
                             mdi-minus
                         </v-icon>
@@ -30,12 +30,12 @@
                 <template v-slot:append-inner>
                     <div class="d-flex">
                         <v-icon class="click-btn" color="red" @click="() => {
-                                if (props.courtNumber > 1)
-                                    emits(
-                                        'update:courtNumber',
-                                        props.courtNumber - 1
-                                    )
-                            }
+                            if (props.courtNumber > 1)
+                                emits(
+                                    'update:courtNumber',
+                                    props.courtNumber - 1
+                                )
+                        }
                             ">
                             mdi-minus
                         </v-icon>
@@ -57,12 +57,12 @@
                 <template v-slot:append-inner>
                     <div class="d-flex">
                         <v-icon class="click-btn" color="red" @click="() => {
-                                if (props.winStreak > 1)
-                                    emits(
-                                        'update:winStreak',
-                                        props.winStreak - 1
-                                    )
-                            }
+                            if (props.winStreak > 1)
+                                emits(
+                                    'update:winStreak',
+                                    props.winStreak - 1
+                                )
+                        }
                             ">
                             mdi-minus
                         </v-icon>
@@ -81,24 +81,24 @@
                 <template v-slot:append-inner>
                     <div class="d-flex">
                         <v-icon class="click-btn" color="red" @click="() => {
-                                if (winScoreIndex < 1) return
-                                winScoreIndex -= 1
-                                hasChange = true
-                                emits('update:winScore', winScore)
-                            }
+                            if (winScoreIndex < 1) return
+                            winScoreIndex -= 1
+                            hasChange = true
+                            emits('update:winScore', winScore)
+                        }
                             ">
                             mdi-chevron-left
                         </v-icon>
                         <v-icon class="ml-1 click-btn" color="green" @click="() => {
-                                if (
-                                    winScoreIndex >=
-                                    listScoreGame.length - 1
-                                )
-                                    return
-                                hasChange = true
-                                winScoreIndex += 1
-                                emits('update:winScore', winScore)
-                            }
+                            if (
+                                winScoreIndex >=
+                                listScoreGame.length - 1
+                            )
+                                return
+                            hasChange = true
+                            winScoreIndex += 1
+                            emits('update:winScore', winScore)
+                        }
                             ">
                             mdi-chevron-right
                         </v-icon>

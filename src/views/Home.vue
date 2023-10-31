@@ -219,7 +219,7 @@
 import { ref, watch } from 'vue'
 import { useTeamStore } from '@/store/team'
 import { useCourtStore } from '@/store/court'
-import TeamAdvanceSetting from '@/components/page/ramdomTeam/AdvanceSetting.vue'
+import TeamAdvanceSetting from '@/components/page/randomTeam/AdvanceSetting.vue'
 import router from '@/router'
 import type { TeamMember } from '@/store/team'
 import { storeToRefs } from 'pinia'
