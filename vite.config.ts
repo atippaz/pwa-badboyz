@@ -45,7 +45,7 @@ export default defineConfig({
         name: 'BadBoyz',
         description: 'my pwa',
         short_name: 'BadBoyz',
-        start_url: "/index.html",
+        start_url: "./index.html",
         scope: "/",
         display: 'standalone',
         background_color: '#ffffff',
