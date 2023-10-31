@@ -1,53 +1,32 @@
 // // service-worker.js
-// const cacheName = 'workbox-precache-v2';
-// // self.addEventListener('install', (event) => {
-// //     event.waitUntil(
-// //         caches.open(cacheName).then((cache) => {
-// //             return cache.addAll([
-// //                 '/',
-// //                 // '/index.html',
-// //                 '/assets',
-// //                 // '/styles.css',
-// //                 // เพิ่ม URL อื่น ๆ ที่คุณต้องการแคช
-// //             ]);
-// //         })
-// //     );
-// // });
+const cacheName = 'cacheweb';
 
-// self.addEventListener('activate', (event) => {
-//     event.waitUntil(
-//         caches.keys().then((cacheNames) => {
-//             return Promise.all(
-//                 cacheNames.map((name) => {
-//                     if (name !== cacheName) {
-//                         return caches.delete(name);
-//                     }
-//                 })
-//             );
-//         })
-//     );
-// });
-
-// self.addEventListener('fetch', (event) => {
-//     if (event.request.mode === 'navigate') {
-//         event.respondWith(
-//             fetch(event.request)
-//                 .then((response) => {
-//                     return caches.open(cacheName)
-//                         .then((cache) => {
-//                             cache.put(event.request, response.clone());
-//                             return response;
-//                         });
-//                 })
-//                 .catch(() => {
-//                     return caches.match(event.request);
-//                 })
-//         );
-//     } else {
-//         event.respondWith(
-//             caches.match(event.request).then((response) => {
-//                 return response || fetch(event.request);
-//             })
-//         );
-//     }
-// });
+self.addEventListener('activate', function (event) {
+    var cacheWhitelist = ['iamgique-cache-v1', 'other-cache-v1'];
+    event.waitUntil(
+        caches.keys().then(function (cacheNames) {
+            return Promise.all(
+                cacheNames.map(function (cacheName) {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
+    );
+});
+self.addEventListener('fetch', function (event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function (response) {
+                console.log("Cache hit - return response");
+                console.log(response);
+                if (response) {
+                    return response;
+                }
+                console.log(event.request);
+                return fetch(event.request);
+            }
+            )
+    );
+});
