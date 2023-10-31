@@ -1,8 +1,26 @@
 // // service-worker.js
 // const cacheName = 'cacheweb';
+var CACHE_NAME = 'mywebcache';
+var urlsToCache = [
+    '/',
+    '/assets/',
+    '/assets/*',
 
+    '/index.html',
+    '/icon.ico'
+];
+
+self.addEventListener('install', function (event) {
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function (cache) {
+                console.log('Opened cache');
+                return cache.addAll(urlsToCache);
+            })
+    );
+});
 self.addEventListener('activate', function (event) {
-    var cacheWhitelist = ['cacheweb', 'other-cache-v1'];
+    var cacheWhitelist = ['mywebcache', 'other-cache-v1'];
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
             return Promise.all(
