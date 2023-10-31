@@ -6,7 +6,7 @@ module.exports = {
         applemobilewebappcapable: 'yes',
         applemobilewebappstatusbarstyle: 'black',
         workboxoptions: {
-            navigatefallback: '/index.html',
+            navigatefallback: './index.html',
         },
     }
 };
