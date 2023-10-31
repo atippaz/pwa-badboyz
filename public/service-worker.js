@@ -1,8 +1,8 @@
 // // service-worker.js
-const cacheName = 'cacheweb';
+// const cacheName = 'cacheweb';
 
 self.addEventListener('activate', function (event) {
-    var cacheWhitelist = ['iamgique-cache-v1', 'other-cache-v1'];
+    var cacheWhitelist = ['cacheweb', 'other-cache-v1'];
     event.waitUntil(
         caches.keys().then(function (cacheNames) {
             return Promise.all(
