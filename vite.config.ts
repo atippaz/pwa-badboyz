@@ -52,7 +52,7 @@ export default defineConfig({
         theme_color: '#000000',
         icons: [
           {
-            src: '/public/icon.ico',
+            src: './icon.ico',
             sizes: '128x128',
             type: 'image/x-icon',
           },
