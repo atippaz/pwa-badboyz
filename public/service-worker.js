@@ -2,15 +2,17 @@
 // const cacheName = 'cacheweb';
 var CACHE_NAME = 'mywebcache';
 var urlsToCache = [
-    // '/',
-
-    // '/assets/.*',
-
-    // './index.html',
-    '/index.html',
-'/service-worker.js',
-
-    // '/icon.ico'
+  "/dist/index.html",
+  "/dist/service-worker.js",
+  "/dist/assets/Home-4151810d.js",
+  "/dist/logo.ico",
+  "/dist/assets/Home-e4e14672.css",
+  "/dist/assets/Default-00baa9b4.js",
+  "/dist/assets/Default-81fe385f.css",
+  "/dist/assets/index-7f909984.js",
+  "/dist/assets/index-82b8739c.js",
+  "/dist/assets/index-8b12752d.css",
+  "/dist/assets/swipe-up-9ebc8446.svg",
 ];
 
 self.addEventListener('install', function (event) {
