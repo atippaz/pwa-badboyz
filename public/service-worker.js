@@ -8,6 +8,7 @@ var urlsToCache = [
 
     // './index.html',
     '/index.html',
+'/service-worker.js',
 
     // '/icon.ico'
 ];
