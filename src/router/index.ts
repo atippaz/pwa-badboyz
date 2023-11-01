@@ -16,7 +16,7 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () => import('@/views/Home.vue'),
       },{
-        path: 'imdex.html',
+        path: 'index.html',
         name: 'HomePageindex',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
