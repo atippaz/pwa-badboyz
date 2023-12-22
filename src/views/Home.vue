@@ -195,10 +195,10 @@ function SplitTeam():string[] {
     }
     return text.map((x)=>{
       const patternInner = /\d+\./
-console.log(patternInner);
+
 
 const indexPattern = x.search(patternInner);
-console.log(indexPattern);
+
 return indexPattern !== -1 ?
 x.slice(0, indexPattern) + x.slice(indexPattern + (indexPattern.toString().length + 1)):
 x})
