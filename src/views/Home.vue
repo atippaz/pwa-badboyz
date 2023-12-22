@@ -265,6 +265,10 @@ async function randomTeam() {
     return
   }
   member.value = SplitTeam() 
+  if (member.value.length < 1) {
+    alert('ใส่ชื่อผู้เล่นด้วย')
+    return
+  }
   const splitTeam = Math.ceil(member.value.length / teamLimit.value)
   if (
     splitTeam +
