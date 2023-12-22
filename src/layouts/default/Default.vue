@@ -25,7 +25,7 @@
       </v-btn>
       <v-btn @click="goPage('HomePageOld')">
         <v-icon>mdi-home</v-icon>
-        Home(old verssion)
+        old v.
       </v-btn>
     </v-bottom-navigation>
   </v-app>
