@@ -1,9 +1,123 @@
 <template>
-<div>
-  <div class="content h-100" style="position: relative">
+  <div>
+    <div class="h-100" style="position: relative" v-touch="{
+      left: () => swipe('Left'),
+      right: () => swipe('Right'),
+      up: () => swipe('Up'),
+      down: () => swipe('Down'),
+    }">
+      <v-btn style="position: fixed; bottom: 80px; right: 16px; z-index: 300" v-if="!isActive && !$vuetify.display.mobile"
+        @click="isActive = true">
+        สร้างทีม
+      </v-btn>
+      <div class="content h-100" style="position: relative">
         <div>
-          
-          <v-container class="pa-6 ma-0">
+          <div class="d-flex justify-space-between align-center mb-2">
+            <div class="mb-1 text-gray-text" style="font-size: 18px">
+              กรอกรายชื่อทีม
+            </div>
+            <v-btn @click="getFormat" class="bg-indigo-lighten-2" rounded="xl">
+              <v-icon> mdi-content-copy </v-icon>
+              รูปแบบ
+            </v-btn>
+          </div>
+          <v-textarea v-model="textTwoDay" placeholder="ตัวอย่างเช่น
+ตีแบดวันเสาร์ 16.40-19.00
+1.xxx
+2.xxx
+-——————
+
+ตีแบดวันอาทิตย์ 18.30-20.30
+1.xxx
+2.xxx">
+          </v-textarea>
+          <div class="d-flex justify-space-between">
+            <v-btn @click="tryToSplitDay" class="bg-primary" rounded="xl" :disabled="textTwoDay.length === 0">
+              สร้างรายชื่อตามวัน
+            </v-btn>
+
+            <v-btn @click="splitTeam" class="bg-red" rounded="xl" :disabled="textTwoDay.length === 0">
+              reset
+            </v-btn>
+          </div>
+          <br />
+          <div class="mb-2">
+            <v-btn @click="satCopy" class="bg-purple-lighten-2" v-if="openSat" rounded="xl">
+              <v-icon> mdi-content-copy </v-icon>
+              รายชื่อวันเสาร์
+            </v-btn>
+          </div>
+          <div>
+            <v-btn @click="sunCopy" class="bg-red-lighten-2" v-if="openSun" rounded="xl">
+              <v-icon> mdi-content-copy </v-icon>
+              รายชื่อวันอาทิตย์
+            </v-btn>
+          </div>
+
+          <!-- <div
+                  style="
+                      position: absolute;
+                      bottom: 0px;
+                      height: 20px;
+                      background-color: rgb(223, 219, 255);
+                      width: 100%;
+                      border-radius: 10px 10px 0px 0px;
+                  "
+                  class="d-flex justify-center"
+              >
+                  <div>
+                      <div class="d-flex justify-center">
+                          <div>
+                              <v-divider
+                                  :thickness="3"
+                                  class="border-opacity-100"
+                                  color="primary"
+                                  style="margin-bottom: 2px; width: 20px"
+                              ></v-divider>
+                          </div>
+                      </div>
+
+                      <div class="d-flex justify-center">
+                          <v-divider
+                              :thickness="3"
+                              class="border-opacity-100"
+                              color="primary"
+                              style="margin-bottom: 2px; width: 40px"
+                          ></v-divider>
+                      </div>
+                  </div>
+              </div> -->
+        </div>
+      </div>
+
+      <div class="d-flex justify-center align-center h-100 background" v-if="$vuetify.display.mobile">
+        <div>
+          <div class="d-flex justify-center align-center">
+            <img src="./../assets/swipe-up.svg" alt="swipe up" />
+          </div>
+          <div class="d-flex justify-center align-center swipe-word">
+            swipe up to random
+          </div>
+        </div>
+      </div>
+    </div>
+    <v-dialog persistent v-model="isActive" transition="dialog-bottom-transition" :fullscreen="true">
+      <v-card class="w-100 h-100" style="border-radius: 10px 10px 0px 0px">
+        <template v-slot:title>
+          <div class="d-flex justify-space-between">
+            <span>Random Badminton Team</span>
+            <v-icon variant="text" @click="isActive = false">
+              mdi-close
+            </v-icon>
+          </div>
+          <div class="d-flex justify-center">
+            <div>
+              <v-divider :thickness="5" class="border-opacity-100 mt-3" color="primary"
+                style="width: 150px; border-radius: 30px"></v-divider>
+            </div>
+          </div>
+        </template>
+        <v-container class="pa-6 ma-0">
           <v-row no-gutters class="h-100">
             <v-col align-self="start" cols="12">
               <div>
@@ -14,17 +128,13 @@
               </div>
               <div :class="{}">
                 <div>
-                  <div class="d-flex justify-space-between align-center mb-2">
-            <div class="mb-1 text-gray-text" style="font-size: 18px">
-              กรอกรายชื่อทีม
-            </div>
-            
-          </div>
-          <v-textarea v-model="textTeam" placeholder="
-ตีแบดวันอาทิตย์ 18.30-20.30
-1.xxx
-2.xxx">
-          </v-textarea>
+                  <div style="
+                                          color: #838383;
+                                          margin-bottom: 12px;
+                                      ">
+                    List of team members
+                  </div>
+                  <textarea v-model="textTeam"></textarea>
                 </div>
                 <div>
                   <div style="
@@ -91,13 +201,19 @@
             </v-col>
           </v-row>
         </v-container>
-       </div>
-      </div>
-      <v-btn style="position: fixed; bottom: 80px; right: 16px; z-index: 300" @click="randomTeam"
-       >
-        สร้างทีม
-      </v-btn>
-</div>
+        <v-card-actions class="mt-auto d-flex justify-end w-100 pa-4">
+          <div class="w-100">
+            <v-btn class="w-100 bg-primary text-white mx-0 mb-2" rounded="xl" @click="randomTeam">
+              random
+            </v-btn>
+            <v-btn class="w-100 text-primary mx-0" style="background-color: #f1f2ff" rounded="xl" @click="resetTextTeam">
+              reset
+            </v-btn>
+          </div>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue'
@@ -108,9 +224,15 @@ import router from '@/router'
 import type { TeamMember } from '@/store/team'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-const showAdvanceSetting = ref(false)
+import { InputType } from 'zlib'
 const roomName = ref('')
-
+const isActive = ref(false)
+function swipe(direction: string) {
+  if (direction === 'Up') {
+    isActive.value = true
+  }
+}
+const showAdvanceSetting = ref(false)
 const { setTeamLimit, addTeamMember, resetTeam, addNewTeam, setTeam } =
   useTeamStore()
 const { setCourtNumber, setWinScore, setWinStreak } = useCourtStore()
@@ -185,25 +307,90 @@ function splitTeam() {
   sundayMember.value = ''
 }
 
-function SplitTeam():string[] {
-  const text = textTeam.value.split('\n')
-  let pattern = [/ตีเเบด/,/ตีแบด/,/วันอาทิตย์/,/วันเสาร์/]
-  if(text.length<1) return []
-  
-    if(pattern.some(x=>x.test(text[0]))){
-      text.splice(0, 1)
+function tryToSplitDay() {
+  saturdayMember.value = ''
+  sundayMember.value = ''
+  try {
+    let remain = textTwoDay.value
+    let sun: any = null
+    let sat: any = null
+
+    if (textTwoDay.value.includes('อาทิตย์')) {
+      remain = textTwoDay.value.trim().split('อาทิตย์')[
+        textTwoDay.value.includes('เสาร์') ? 0 : 1
+      ]
+      sun = textTwoDay.value
+        .trim()
+        .split('อาทิตย์')[1]
+        .split('\n')
+        .slice(1)
     }
-    return text.map((x)=>{
-      const patternInner = /\d+\./
-console.log(patternInner);
+    if (textTwoDay.value.includes('เสาร์')) {
+      sat = remain.trim().split('เสาร์')[1].split('\n').slice(1)
+    }
+    let satFinish = !textTwoDay.value.includes('เสาร์')
+    console.log(sat)
 
-const indexPattern = x.search(patternInner);
-console.log(indexPattern);
-return indexPattern !== -1 ?
-x.slice(0, indexPattern) + x.slice(indexPattern + (indexPattern.toString().length + 1)):
-x})
+    let index = 0
+    while (!satFinish) {
+      if (sat && sat[index].trim() === '') {
+      } else if (sat[index] && sat[index].includes(`${index + 1}.`)) {
+        const strSplit = index + 1 + '.'
+        saturdayMember.value +=
+          sat[index].trim().split(strSplit)[1].trim() + '\n'
+      } else if (sat[index] && sat[index].includes(`${index + 1}`)) {
+        const strSplit = index + 1 + ''
+        saturdayMember.value +=
+          sat[index].trim().split(strSplit)[1].trim() + '\n'
+      } else {
+        satFinish = true
+      }
+      if (index === sat.length - 1) {
+        satFinish = true
+      }
+      index++
+    }
+    index = 0
+    let sunFinish = !textTwoDay.value.includes('อาทิตย์')
+    while (!sunFinish) {
+      if (sun && sun[index].trim() === '') {
+      } else if (
+        sun &&
+        sun[index] &&
+        sun[index].includes(`${index + 1}.`)
+      ) {
+        const strSplit = index + 1 + '.'
+        sundayMember.value +=
+          sun[index].trim().split(strSplit)[1].trim() + '\n'
+      } else if (
+        sun &&
+        sun[index] &&
+        sun[index].includes(`${index + 1}`)
+      ) {
+        const strSplit = index + 1 + ''
+        sundayMember.value +=
+          sun[index].trim().split(strSplit)[1].trim() + '\n'
+      } else {
+        sunFinish = true
+      }
+      if (index === sun.length - 1) {
+        sunFinish = true
+      }
+      index++
+    }
+
+    openCopyDay.value = true
+  } catch (e) {
+    console.log(e)
+    alert('ไม่ถูกรูปแบบ')
+  }
 }
-
+function satCopy() {
+  navigator.clipboard.writeText(saturdayMember.value)
+}
+function sunCopy() {
+  navigator.clipboard.writeText(sundayMember.value)
+}
 function generateMember() {
   return textTeam.value.split('\n').length > 0
     ? textTeam.value.trim().split('\n')
@@ -264,7 +451,7 @@ async function randomTeam() {
     alert('ใส่ชื่อผู้เล่นทีมล็อคไม่ครบ')
     return
   }
-  member.value = SplitTeam() 
+  member.value = generateMember()
   const splitTeam = Math.ceil(member.value.length / teamLimit.value)
   if (
     splitTeam +
@@ -279,8 +466,8 @@ async function randomTeam() {
     )
     return
   }
-  // showAdvanceSetting.value = false
-  // isActive.value = false
+  showAdvanceSetting.value = false
+  isActive.value = false
   localStorage.setItem('textTeam', textTeam.value)
   localStorage.setItem('courtNumber', courtNumber.value.toString())
   localStorage.setItem('winScore', winScore.value.toString())

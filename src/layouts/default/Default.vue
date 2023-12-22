@@ -14,6 +14,7 @@
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
+      
       <v-btn @click="goPage('RoomListPage')">
         <v-icon>mdi-list-box-outline</v-icon>
         RoomList
@@ -21,6 +22,10 @@
       <v-btn @click="goPage('TestPage')">
         <v-icon>mdi-cog-outline</v-icon>
         Test
+      </v-btn>
+      <v-btn @click="goPage('HomePageOld')">
+        <v-icon>mdi-home</v-icon>
+        Home(old verssion)
       </v-btn>
     </v-bottom-navigation>
   </v-app>
