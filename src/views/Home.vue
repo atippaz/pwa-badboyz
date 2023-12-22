@@ -1,9 +1,9 @@
 <template>
 <div>
-  <div class="content h-100" style="position: relative">
+  <div class="h-100">
         <div>
           
-          <v-container class="pa-6 ma-0">
+          <v-container class="pa-1 ma-0">
           <v-row no-gutters class="h-100">
             <v-col align-self="start" cols="12">
               <div>
