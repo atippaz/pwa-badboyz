@@ -78,7 +78,7 @@ router.onError((error, to) => {
     error.message.includes('Importing a module script failed')
   ) {
     console.log(error)
-    router.push({ name: 'HomePage' })
+    router.push({ name: "Rooms" });
   }
 })
 
