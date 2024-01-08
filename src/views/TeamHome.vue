@@ -12,7 +12,7 @@
             <v-col align-self="start" cols="12">
               <div>
                 <div style="color: #838383; margin-bottom: 12px">
-                  Team Name
+                  Team Name (ไม่ต้องใส่ก็ได้)
                 </div>
                 <v-text-field v-model="setName" placeholder="team name"></v-text-field>
               </div>
