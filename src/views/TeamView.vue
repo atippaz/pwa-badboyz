@@ -6,18 +6,18 @@
         </div>
         <div>
             <CardVersus v-for="(team, index) in courtTeam" class="mb-4" :court-number="index + 1" :team-a="{ score: 0 }"
-                :team-b="{ score: 0 }">
+                :team-b="{ score: 0 }" :key="index">
                 <template #teamA>
                     team
                     {{ team.teamA.order }}
-                    <div v-for="member in team.teamA.member" class="trunt-word">
+                    <div v-for="member in team.teamA.member" class="trunt-word" :key="member">
                         {{ member }}
                     </div>
                 </template>
                 <template #teamB>
                     team
                     {{ team.teamB.order }}
-                    <div v-for="member in team.teamB.member" class="trunt-word">
+                    <div v-for="member in team.teamB.member" class="trunt-word" :key="member">
                         {{ member }}
                     </div>
                 </template>
@@ -31,7 +31,7 @@
                 <v-card v-for="team in nextTeam" class="mb-2" elevation="0" style="
                         border-radius: 8px;
                         border: 1px solid rgb(203, 203, 203);
-                    ">
+                    " :key="team">
                     <template v-slot:text>
                         team {{ team.order }} : {{ team.member.join(' , ') }}
                     </template>
@@ -55,6 +55,8 @@ const pageState = inject(pageStatePluginSymbol)!
 const teamStore = useTeamStore()
 const { court } = storeToRefs(useCourtStore())
 const teamRemain = computed(() => teamStore.getRemainQueue())
+const roomId = route.params.roomId
+const teamId = route.params.teamId
 const teams = ref<any>([])
 import { loaderPluginSymbol } from '@/plugins/loading'
 const loading = inject(loaderPluginSymbol)!
@@ -74,16 +76,14 @@ const teamLimit = ref(0)
 onMounted(async () => {
     try {
         loading.setLoadingOn()
-        const roomId = route.params.roomId
-        if (!roomId) throw new Error('')
+        const teamId = route.params.teamId
+        if (!teamId) throw new Error('')
 
-        const { roomData: data, _id } = await fetch(
-            'https://bad-boy-service.vercel.app/room/' + roomId
-        ).then((e) => e.json())
+        const data = await fetch('https://bad-boy-service.vercel.app/team/' + teamId).then((e) => e.json())
         console.log(data)
         if (!data) throw new Error('')
 
-        roomName.value = data.roomName
+        roomName.value = data.teamName
         courtNumber.value = data.courtNumber
         teamLimit.value = data.teamLimit
         setTeam(data)
@@ -95,7 +95,10 @@ onMounted(async () => {
         // }
     } catch (e) {
         console.log(e)
-        router.push({ name: 'HomePage' })
+        alert('เกิดข้อผิดพลาด')
+        router.push({ name: 'Room',params:{roomId:roomId} })
+        loading.setLoadingOff()
+
     }
 })
 function setTeam(team: any) {

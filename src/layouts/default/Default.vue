@@ -10,23 +10,26 @@
               Back
           </v-btn> -->
 
-      <v-btn @click="goPage('HomePage')">
+      <v-btn @click="goPage('Rooms')">
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
-      
-      <v-btn @click="goPage('RoomListPage')">
+      <v-btn @click="goPage('Room')">
+        <v-icon>mdi-cog-outline</v-icon>
+        Create Team
+      </v-btn>
+      <!-- <v-btn @click="goPage('RoomListPage')">
         <v-icon>mdi-list-box-outline</v-icon>
         RoomList
-      </v-btn>
-      <v-btn @click="goPage('TestPage')">
+      </v-btn> -->
+      <v-btn @click="goPage('TeamList')">
         <v-icon>mdi-cog-outline</v-icon>
-        Test
+        View Team
       </v-btn>
-      <v-btn @click="goPage('HomePageOld')">
+      <!-- <v-btn @click="goPage('HomePageOld')">
         <v-icon>mdi-home</v-icon>
         old v.
-      </v-btn>
+      </v-btn> -->
     </v-bottom-navigation>
   </v-app>
 </template>
@@ -37,13 +40,22 @@ import DefaultBar from './AppBar.vue'
 import DefaultView from './View.vue'
 import { pageStatePluginSymbol } from '@/plugins/pageState'
 import { inject } from 'vue'
+import { useRoute } from 'vue-router'
 const pageState = inject(pageStatePluginSymbol)!
+const route = useRoute()
+
+const roomId = route.params.roomId
+
 function goPage(name: string) {
   // if (pageState.isCreateTeam.value) {
   //     if (!confirm('ต้องการเปลี่ยนหน้าหรือไม่')) return
   // }
   pageState.resetCreateRoomTeam()
-  router.push({ name: name })
+if(name == 'Rooms'){
+  localStorage.setItem('redirectWithButtonClick',JSON.stringify(true))
+}
+  router.push({ name: name ,params:{roomId:roomId}})
+  
 }
 </script>
 <style scoped lang="scss">

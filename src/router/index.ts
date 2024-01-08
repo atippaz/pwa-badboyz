@@ -6,50 +6,63 @@ import TeamView from '@/views/TeamView.vue'
 const routes = [
   {
     path: "/",
+    redirect: "/room",
+    component: () => import("@/layouts/default/IndexLayout.vue"),
+    children: [
+      {
+        path: "room",
+        name: "Rooms",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import("@/views/RoomHome.vue"),
+        alias: "index.html",
+      },
+      {
+        path: "spending",
+        name: "Spending",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import("@/views/Spending.vue"),
+      },
+    ],
+  },
+  {
+    path: "/room/:roomId",
     component: () => import("@/layouts/default/Default.vue"),
     children: [
       {
         path: "",
-        name: "HomePage",
+        name: "Room",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import("@/views/Home.vue"),
-        alias: "index.html",
+        component: () => import("@/views/TeamHome.vue"),
       },
       {
-        path: "",
-        name: "HomePageOld",
+        path: "/team-list/:roomId",
+        name: "TeamList",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import("@/views/HomeOld.vue"),
+        component: () => import("@/views/TeamList.vue"),
       },
       {
-        path: "team-view/:roomId",
-        name: "TeamListPage",
+        path: "team-view/:teamId",
+        name: "TeamView",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: async () => await import("@/views/TeamView.vue"),
       },
       {
-        path: "counter-view",
-        name: "CounterPage",
+        path: "/test",
+        name: "Test",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import("@/views/CounterView.vue"),
-      },
-      {
-        path: "test-system",
-        name: "TestPage",
-        component: () => import("@/views/TestView.vue"),
-      },
-      {
-        path: "room-list",
-        name: "RoomListPage",
-        component: () => import("@/views/RoomList.vue"),
+        component: async () => await import("@/views/Test.vue"),
       },
     ],
   },

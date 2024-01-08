@@ -2,15 +2,19 @@
 <div>
   <div class="h-100">
         <div>
-          
           <v-container class="pa-0 ma-0">
           <v-row no-gutters class="h-100">
+            <v-col cols="12">
+              <div style="color: #838383; margin-bottom: 12px">
+                  Room Name :  {{ roomData?.roomName }}
+                </div>
+            </v-col>
             <v-col align-self="start" cols="12">
               <div>
                 <div style="color: #838383; margin-bottom: 12px">
-                  Room Name
+                  Team Name
                 </div>
-                <v-text-field v-model="roomName" placeholder="room name"></v-text-field>
+                <v-text-field v-model="setName" placeholder="team name"></v-text-field>
               </div>
               <div :class="{}">
                 <div>
@@ -89,27 +93,41 @@
                   }"></TeamAdvanceSetting>
               </div>
             </v-col>
+            <v-col cols="12">
+              <div>
+                <v-btn variant="flat" @click="createTeam"  class="w-100 mt-4 text-white bg-primary" 
+                                                   rounded="xl">สร้างทีม</v-btn>
+              </div>
+            </v-col>
+            <v-col cols="12">
+              <div>
+                <v-btn variant="flat" @click="deleteAllData"  class="w-100 mt-4 text-white bg-error"  
+                                                   rounded="xl">ลบข้อมูลทั้งหมด</v-btn>
+              </div>
+            </v-col>
           </v-row>
         </v-container>
        </div>
       </div>
-      <v-btn style="position: fixed; bottom: 80px; right: 16px; z-index: 300" @click="randomTeam"
+      <!-- <v-btn style="position: fixed; bottom: 80px; right: 16px; z-index: 300" @click="createTeam"
        >
         สร้างทีม
-      </v-btn>
+      </v-btn> -->
 </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { useTeamStore } from '@/store/team'
 import { useCourtStore } from '@/store/court'
 import TeamAdvanceSetting from '@/components/page/randomTeam/AdvanceSetting.vue'
 import router from '@/router'
 import type { TeamMember } from '@/store/team'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { onMounted, ref, computed, inject, watch } from 'vue'
+import { loaderPluginSymbol } from '@/plugins/loading'
+import { useRoute } from 'vue-router'
+
 const showAdvanceSetting = ref(false)
-const roomName = ref('')
+const setName = ref('')
 
 const { setTeamLimit, addTeamMember, resetTeam, addNewTeam, setTeam } =
   useTeamStore()
@@ -144,17 +162,31 @@ const winScore = ref(
     ? 15
     : parseInt(localStorage.getItem('winScore')!)
 )
+teamLocks.value = (localStorage.getItem('teamLock') != null ? JSON.parse(localStorage.getItem('teamLock')!):[])
 const openCopyDay = ref(false)
 const textTeam = ref(localStorage.getItem('textTeam') ?? '')
 const member = ref<string[]>([])
 const saturdayMember = ref('')
 const sundayMember = ref('')
+const loading = inject(loaderPluginSymbol)!
+const roomData = ref()
+const route = useRoute()
+const roomId = route.params.roomId
+localStorage.setItem('roomId',roomId.toString())
 watch(
   () => textTwoDay.value,
   (newValue) => {
     openCopyDay.value = false
   }
 )
+onMounted(async () => {
+  loading.setLoadingOn()
+  roomData.value = await fetch(`https://bad-boy-service.vercel.app/room/${roomId}`).then(
+      (e) => e.json()
+  )
+//   polling.startConection(fetchData)
+  loading.setLoadingOff()
+})
 function addLockTeam() {
   const newTeamLock: TeamLock = {
     teamId: teamLocks.value.length + 1,
@@ -167,6 +199,20 @@ function addLockTeam() {
 }
 function deleteLockTeam(teamlockIndex: number) {
   teamLocks.value.splice(teamlockIndex, 1)
+}
+function deleteAllData(){
+   courtNumber.value = 1
+   localStorage.setItem('courtNumber',courtNumber.value.toString())
+   winStreak.value = 2
+   localStorage.setItem('winStreak',winStreak.value.toString())
+   teamLimit.value = 2
+   localStorage.setItem('teamLimit',teamLimit.value.toString())
+   winScore.value = 15
+   localStorage.setItem('winScore',winScore.value.toString())
+   localStorage.removeItem('teamLock')
+   localStorage.removeItem('textTeam')
+   textTeam.value = ''
+   teamLocks.value = []
 }
 function getFormat() {
   navigator.clipboard.writeText(`ตีแบดวันเสาร์ xx.xx-xx.xx
@@ -194,14 +240,9 @@ function SplitTeam():string[] {
       text.splice(0, 1)
     }
     return text.map((x)=>{
-      const patternInner = /\d+\./
-
-
-const indexPattern = x.search(patternInner);
-
-return indexPattern !== -1 ?
-x.slice(0, indexPattern) + x.slice(indexPattern + (indexPattern.toString().length + 1)):
-x})
+      const patternInner = /(\d+\.)+/g
+      const test = x.match(patternInner)
+      return test ? x.replace(patternInner, ""):x})
 }
 
 function generateMember() {
@@ -253,7 +294,7 @@ function resetTextTeam() {
   winStreak.value = 2
   teamLimit.value = 2
 }
-async function randomTeam() {
+async function createTeam() {
   if (textTeam.value.trim() === '') {
     alert('ใส่ชื่อผู้เล่นด้วย')
     return
@@ -290,6 +331,7 @@ async function randomTeam() {
   localStorage.setItem('winScore', winScore.value.toString())
   localStorage.setItem('winStreak', winStreak.value.toString())
   localStorage.setItem('teamLimit', teamLimit.value.toString())
+  localStorage.setItem('teamLock',JSON.stringify(teamLocks.value))
   setCourtNumber(courtNumber.value)
   resetTeam()
   setTeamLimit(teamLimit.value)
@@ -303,19 +345,23 @@ async function randomTeam() {
   teamLocks.value.forEach((e) => {
     addNewTeam(e.teamMember)
   })
+  console.log(teamLocks.value);
+  
   const _team = teamState.value
   const sufferTeam = shufferTeam(_team)
   setTeam(sufferTeam)
 
   const payload = {
-    roomName: roomName.value,
-    allTeam: teamMember.value,
+    setName: setName.value,
+    members: member.value,
     teamLimit: teamLimit.value,
     winScore: winScore.value,
     winStreak: winStreak.value,
     courtNumber: courtNumber.value,
+    roomId:roomId,
+    teamLock :teamLocks.value
   }
-  const data = await fetch('https://bad-boy-service.vercel.app/room', {
+  const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     headers: {
       'Content-Type': 'application/json',
@@ -325,7 +371,7 @@ async function randomTeam() {
   if (!data) return
   console.log(data)
 
-  router.push({ name: 'TeamListPage', params: { roomId: data.id } })
+  router.push({ name: 'TeamView', params: { teamId: data.id } })
 }
 </script>
 <style scoped lang="scss">
