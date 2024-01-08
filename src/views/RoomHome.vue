@@ -28,13 +28,8 @@
         >
           <v-card-title>{{ i.roomName }}</v-card-title>
           <v-card-text>
-            <div class="d-flex" style="overflow-x: hidden">
-              <div class="trunt-word">
-                <span v-for="(n, nIndex) in i.allTeam" :key="nIndex">
-                  ทีม {{ n.member.join(" , ") }} &emsp;
-                </span>
-              </div>
-            </div>
+           {{ i.roomDescription??'' }} <br v-if="i.roomDescription">
+           {{ new Date(i.roomCreateOn).toDateString() }}
           </v-card-text>
         </v-card>
       </div>
