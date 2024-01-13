@@ -4,26 +4,26 @@
     <div class="mx-4 mt-10 mb-10 h-100">
       <default-view class="h-100" />
     </div>
-    <v-bottom-navigation :elevation="6" grow :active="true">
+    <v-bottom-navigation :elevation="6" :model-value="route.name" @update:model-value="(e)=>goPage(e)" grow :active="true">
       <!-- <v-btn @click="$router.back()">
               <v-icon>mdi-arrow-left</v-icon>
               Back
           </v-btn> -->
 
-      <v-btn @click="goPage('Rooms')">
+      <v-btn value="Rooms" >
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
-      <v-btn @click="goPage('Room')">
-        <v-icon>mdi-cog-outline</v-icon>
+      <v-btn value="Room">
+        <v-icon>mdi-plus-circle-outline</v-icon>
         Create Team
       </v-btn>
       <!-- <v-btn @click="goPage('RoomListPage')">
         <v-icon>mdi-list-box-outline</v-icon>
         RoomList
       </v-btn> -->
-      <v-btn @click="goPage('TeamList')">
-        <v-icon>mdi-cog-outline</v-icon>
+      <v-btn value="TeamList">
+        <v-icon>mdi-list-box-outline</v-icon>
         View Team
       </v-btn>
       <!-- <v-btn @click="goPage('HomePageOld')">

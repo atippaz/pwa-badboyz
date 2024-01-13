@@ -10,7 +10,7 @@ const routes = [
     component: () => import("@/layouts/default/IndexLayout.vue"),
     children: [
       {
-        path: "room",
+        path: "/room",
         name: "Rooms",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -19,7 +19,7 @@ const routes = [
         alias: "index.html",
       },
       {
-        path: "spending",
+        path: "/spending",
         name: "Spending",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
