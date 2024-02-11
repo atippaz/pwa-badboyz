@@ -62,7 +62,7 @@ async function fetchData() {
   )
 }
 async function deleteAllTeam(){
-  _data.value = await fetch(`https://bad-boy-service.vercel.app/deleteTeam/${roomId}`).then(
+  _data.value = await fetch(`https://bad-boy-service.vercel.app/deleteRoom/${roomId}`).then(
       (e) => e.json()
   )
   fetchData()

@@ -1,6 +1,11 @@
 <template>
     <div class="h-100">
-        <h1>ห้อง : {{ roomName }}</h1>
+        <div class="d-flex justify-space-between">
+            <div>
+                <h1>ห้อง : {{ roomName }}</h1>
+            </div>
+            <v-btn @click="deleteTeam"> ลบห้อง</v-btn>
+        </div>
         <div class="mb-2" style="font-size: 20px; font-weight: bold">
             ทีมปัจจุบัน
         </div>
@@ -73,6 +78,12 @@ const courtTeam = ref<any>([])
 const roomName = ref()
 const courtNumber = ref(0)
 const teamLimit = ref(0)
+async function deleteTeam(){
+await fetch(`https://bad-boy-service.vercel.app/deleteTeam/${teamId}`).then(
+      (e) => e.json()
+)
+router.push({name:'TeamList'})
+}
 onMounted(async () => {
     try {
         loading.setLoadingOn()
