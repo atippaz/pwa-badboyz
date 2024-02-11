@@ -361,7 +361,7 @@ async function createTeam() {
     roomId:roomId,
     teamLock :teamLocks.value
   }
-  const data = await fetch(`http://localhost:3001/team`, {
+  const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     headers: {
       'Content-Type': 'application/json',
