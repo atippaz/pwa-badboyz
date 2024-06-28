@@ -1,7 +1,6 @@
 // Composables
-import { defineComponent } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import TeamView from '@/views/TeamView.vue'
+import { defineComponent } from "vue";
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
@@ -32,6 +31,14 @@ const routes = [
     path: "/room/:roomId",
     component: () => import("@/layouts/default/Default.vue"),
     children: [
+      // {
+      //   path: "/unique-team/:roomId",
+      //   name: "UniqueTeam",
+      //   // route level code-splitting
+      //   // this generates a separate chunk (about.[hash].js) for this route
+      //   // which is lazy-loaded when the route is visited.
+      //   component: () => import("@/views/UniqueTeam.vue"),
+      // },
       {
         path: "",
         name: "Room",
@@ -71,15 +78,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-})
+});
 router.onError((error, to) => {
   if (
-    error.message.includes('Failed to fetch dynamically imported module') ||
-    error.message.includes('Importing a module script failed')
+    error.message.includes("Failed to fetch dynamically imported module") ||
+    error.message.includes("Importing a module script failed")
   ) {
-    console.log(error)
+    console.log(error);
     router.push({ name: "Rooms" });
   }
-})
+});
 
-export default router
+export default router;

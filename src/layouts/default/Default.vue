@@ -4,19 +4,26 @@
     <div class="mx-4 mt-10 mb-10 h-100">
       <default-view class="h-100" />
     </div>
-    <v-bottom-navigation :elevation="6" :model-value="route.name" @update:model-value="(e)=>goPage(e)" grow :active="true">
+    <v-bottom-navigation
+      :elevation="6"
+      :model-value="route.name"
+      @update:model-value="(e:string) => goPage(e)"
+      grow
+      :active="true"
+    >
       <!-- <v-btn @click="$router.back()">
               <v-icon>mdi-arrow-left</v-icon>
               Back
           </v-btn> -->
 
-      <v-btn value="Rooms" >
+      <v-btn value="Rooms">
         <v-icon>mdi-home</v-icon>
         Home
       </v-btn>
+
       <v-btn value="Room">
         <v-icon>mdi-plus-circle-outline</v-icon>
-        Create Team
+        Create Pairing
       </v-btn>
       <!-- <v-btn @click="goPage('RoomListPage')">
         <v-icon>mdi-list-box-outline</v-icon>
@@ -35,27 +42,26 @@
 </template>
 
 <script lang="ts" setup>
-import router from '@/router'
-import DefaultBar from './AppBar.vue'
-import DefaultView from './View.vue'
-import { pageStatePluginSymbol } from '@/plugins/pageState'
-import { inject } from 'vue'
-import { useRoute } from 'vue-router'
-const pageState = inject(pageStatePluginSymbol)!
-const route = useRoute()
+import router from "@/router";
+import DefaultBar from "./AppBar.vue";
+import DefaultView from "./View.vue";
+import { pageStatePluginSymbol } from "@/plugins/pageState";
+import { inject } from "vue";
+import { useRoute } from "vue-router";
+const pageState = inject(pageStatePluginSymbol)!;
+const route = useRoute();
 
-const roomId = route.params.roomId
+const roomId = route.params.roomId;
 
 function goPage(name: string) {
   // if (pageState.isCreateTeam.value) {
   //     if (!confirm('ต้องการเปลี่ยนหน้าหรือไม่')) return
   // }
-  pageState.resetCreateRoomTeam()
-if(name == 'Rooms'){
-  localStorage.setItem('redirectWithButtonClick',JSON.stringify(true))
-}
-  router.push({ name: name ,params:{roomId:roomId}})
-  
+  pageState.resetCreateRoomTeam();
+  if (name == "Rooms") {
+    localStorage.setItem("redirectWithButtonClick", JSON.stringify(true));
+  }
+  router.push({ name: name, params: { roomId: roomId } });
 }
 </script>
 <style scoped lang="scss">
@@ -78,4 +84,5 @@ if(name == 'Rooms'){
 
 .my-custom-dialog {
   align-self: flex-end;
-}</style>
+}
+</style>

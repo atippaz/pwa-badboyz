@@ -28,8 +28,8 @@
         >
           <v-card-title>{{ i.roomName }}</v-card-title>
           <v-card-text>
-           {{ i.roomDescription??'' }} <br v-if="i.roomDescription">
-           {{ new Date(i.roomCreateOn).toDateString() }}
+            {{ i.roomDescription ?? "" }} <br v-if="i.roomDescription" />
+            {{ new Date(i.roomCreateOn).toDateString() }}
           </v-card-text>
         </v-card>
       </div>
@@ -90,6 +90,8 @@ import { onMounted, ref, computed, inject, onUnmounted } from "vue";
 import { loaderPluginSymbol } from "@/plugins/loading";
 import { pollingPluginSymbol } from "@/plugins/pollingEvent";
 import router from "@/router";
+import { useRoomApi } from "@/composables/useApi";
+const roomApi = useRoomApi();
 const dialog = ref(false);
 const roomName = ref("");
 const description = ref("");
@@ -112,27 +114,13 @@ function goToRoomView(roomId: string) {
 }
 async function createRoom() {
   const payload = { roomName: roomName.value, description: description.value };
-  const data = await fetch("https://bad-boy-service.vercel.app/room", {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload), // body data type must match "Content-Type" header
-  }).then((e) => e.json());
+  const data = await roomApi.createRoom(payload);
   if (!data) return;
-  console.log(data);
-
   router.push({ name: "Room", params: { roomId: data.id } });
 }
 const search = ref("");
 async function fetchData() {
-  console.log("work");
-  _data.value = await fetch("https://bad-boy-service.vercel.app/room").then(
-    (e) => e.json()
-  );
-  //   _data.value = await fetch('https://bad-boy-service.vercel.app/room').then(
-  //       (e) => e.json()
-  //   )
+  _data.value = await roomApi.getAllRoom();
 }
 onMounted(async () => {
   loading.setLoadingOn();
