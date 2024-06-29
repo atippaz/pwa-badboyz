@@ -67,7 +67,11 @@
               <div class="trunt-word">
                 <span v-for="(n, nIndex) in i.allTeam" :key="nIndex">
                   set {{ nIndex + 1 }}
-                  {{ n.set.map((m, o) => `team ที่${o + 1}`).join(", ") }}
+                  {{
+                    n.set
+                      .map((m: any, o: number) => `team ที่${o + 1}`)
+                      .join(", ")
+                  }}
                   &emsp;
                 </span>
               </div>

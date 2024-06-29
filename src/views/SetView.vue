@@ -83,7 +83,7 @@ const setId = route.params.setId;
 const teams = ref<any>([]);
 import { loaderPluginSymbol } from "@/plugins/loading";
 const loading = inject(loaderPluginSymbol)!;
-const set = ref([]);
+const set = ref<any>([]);
 const nextTeam = ref<any>([]);
 const courtTeam = ref<any>([]);
 const roomName = ref();
@@ -125,7 +125,7 @@ onMounted(async () => {
   }
 });
 function setTeam(_team: any) {
-  _team.allTeam.forEach((team) => {
+  _team.allTeam.forEach((team: any) => {
     const needTeam = courtNumber.value * 2;
     const courtTeam = [];
     console.log(team);
@@ -137,7 +137,7 @@ function setTeam(_team: any) {
         });
       }
     }
-    const nextTeam = [];
+    const nextTeam: any = [];
     team.set.forEach((e: any, index: number) => {
       if (index >= needTeam) {
         nextTeam.push(e);
