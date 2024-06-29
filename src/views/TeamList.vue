@@ -20,6 +20,7 @@
     </div>
     <div class="mt-12 pt-2">
       <div v-if="data.length != 0">
+        team
         <v-card
           v-for="i in data"
           class="my-4"
@@ -39,6 +40,35 @@
               <div class="trunt-word">
                 <span v-for="(n, nIndex) in i.allTeam" :key="nIndex">
                   ทีม {{ n.member.join(" , ") }} &emsp;
+                </span>
+              </div>
+            </div>
+          </v-card-text>
+        </v-card>
+      </div>
+      <div v-if="set.length != 0">
+        set
+        <v-card
+          v-for="i in set"
+          class="my-4"
+          @click="
+            $router.push({
+              name: 'SetView',
+              params: {
+                setId: i.setId,
+              },
+            })
+          "
+          :key="i"
+        >
+          <v-card-title>{{ i.teamName }}</v-card-title>
+          <v-card-text>
+            <div class="d-flex" style="overflow-x: hidden">
+              <div class="trunt-word">
+                <span v-for="(n, nIndex) in i.allTeam" :key="nIndex">
+                  set {{ nIndex + 1 }}
+                  {{ n.set.map((m, o) => `team ที่${o + 1}`).join(", ") }}
+                  &emsp;
                 </span>
               </div>
             </div>
@@ -65,11 +95,21 @@ const data = computed(() =>
     (e: any) => !search.value || e.roomName.includes(search.value)
   )
 );
+const set = computed(() =>
+  _set.value.filter(
+    (e: any) => !search.value || e.roomName.includes(search.value)
+  )
+);
 const _data = ref<any>([]);
+const _set = ref<any>([]);
+
 const search = ref("");
 async function fetchData() {
   _data.value = await fetch(
     `https://bad-boy-service.vercel.app/team/?roomId=${roomId}`
+  ).then((e) => e.json());
+  _set.value = await fetch(
+    `https://bad-boy-service.vercel.app/set/?roomId=${roomId}`
   ).then((e) => e.json());
 }
 async function deleteAllTeam() {

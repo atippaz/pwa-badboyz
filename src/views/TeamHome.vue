@@ -216,7 +216,7 @@ interface TeamLock {
   teamId: number;
   teamMember: string[];
 }
-const teamLockList = computed(() => teamLocks.value);
+// const teamLockList = computed(() => teamLocks.value);
 const teamLocks = ref<TeamLock[]>([]);
 const textTwoDay = ref("");
 const courtNumber = ref(
@@ -265,6 +265,7 @@ onMounted(async () => {
     `https://bad-boy-service.vercel.app/room/${roomId}`
   ).then((e) => e.json());
   //   polling.startConection(fetchData)
+  setMember();
   loading.setLoadingOff();
 });
 function addLockTeam() {
@@ -419,24 +420,24 @@ async function createTeam() {
   localStorage.setItem("winStreak", winStreak.value.toString());
   localStorage.setItem("teamLimit", teamLimit.value.toString());
   localStorage.setItem("teamLock", JSON.stringify(teamLocks.value));
-  setCourtNumber(courtNumber.value);
-  resetTeam();
-  setTeamLimit(teamLimit.value);
-  setWinScore(winScore.value);
-  setWinStreak(winStreak.value);
+  // setCourtNumber(courtNumber.value);
+  // resetTeam();
+  // setTeamLimit(teamLimit.value);
+  // setWinScore(winScore.value);
+  // setWinStreak(winStreak.value);
 
   member.value = shufferMember(member.value);
   member.value.forEach((player) => {
-    addTeamMember(player);
+    // addTeamMember(player);
   });
   teamLocks.value.forEach((e) => {
-    addNewTeam(e.teamMember);
+    // addNewTeam(e.teamMember);
   });
   console.log(teamLocks.value);
 
-  const _team = teamState.value;
-  const sufferTeam = shufferTeam(_team);
-  setTeam(sufferTeam);
+  // const _team = teamState.value;
+  // const sufferTeam = shufferTeam(_team);
+  // setTeam(sufferTeam);
 
   const payload = {
     setName: setName.value,
@@ -447,7 +448,12 @@ async function createTeam() {
     courtNumber: courtNumber.value,
     roomId: roomId,
     teamLock: teamLocks.value,
+    matchSet: {
+      isSet: paringSet.value,
+      limitSet: teamLimittParing.value,
+    },
   };
+  console.log(payload);
   const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     headers: {
@@ -455,10 +461,24 @@ async function createTeam() {
     },
     body: JSON.stringify(payload), // body data type must match "Content-Type" header
   }).then((e) => e.json());
-  if (!data) return;
   console.log(data);
+  if (data.isSet) {
+    console.log(data);
+    router.push({ name: "SetView", params: { setId: data.id } });
+  } else {
+    router.push({ name: "TeamView", params: { teamId: data.id } });
+  }
+  // const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
+  //   method: "POST", // *GET, POST, PUT, DELETE, etc.
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(payload), // body data type must match "Content-Type" header
+  // }).then((e) => e.json());
+  // if (!data) return;
+  // console.log(data);
 
-  router.push({ name: "TeamView", params: { teamId: data.id } });
+  // router.push({ name: "TeamView", params: { teamId: data.id } });
 }
 </script>
 <style scoped lang="scss">

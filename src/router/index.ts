@@ -31,14 +31,6 @@ const routes = [
     path: "/room/:roomId",
     component: () => import("@/layouts/default/Default.vue"),
     children: [
-      // {
-      //   path: "/unique-team/:roomId",
-      //   name: "UniqueTeam",
-      //   // route level code-splitting
-      //   // this generates a separate chunk (about.[hash].js) for this route
-      //   // which is lazy-loaded when the route is visited.
-      //   component: () => import("@/views/UniqueTeam.vue"),
-      // },
       {
         path: "",
         name: "Room",
@@ -62,6 +54,14 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: async () => await import("@/views/TeamView.vue"),
+      },
+      {
+        path: "set-view/:setId",
+        name: "SetView",
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: async () => await import("@/views/SetView.vue"),
       },
       {
         path: "/test",
