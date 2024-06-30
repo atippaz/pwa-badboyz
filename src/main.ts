@@ -24,7 +24,7 @@ const app = createApp(App);
 try {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
-      navigator.serviceWorker.register("/public/service-worker.js").then(
+      navigator.serviceWorker.register("/service-worker.js").then(
         function (registration) {
           console.log(
             "ServiceWorker registration successful with scope: ",
