@@ -2,13 +2,13 @@
 // const cacheName = 'cacheweb';
 var CACHE_NAME = "mywebcache";
 var urlsToCache = [
-  "/dist/index.html",
-  "/dist/service-worker.js",
-  "/dist/manifest.webmanifest",
-  "/dist/logo.ico",
-  "/dist/registerSW.js",
-  "/dist/workbox-fa446783.js",
-  "/dist/sw.js",
+  "/index.html",
+  "/service-worker.js",
+  "/manifest.webmanifest",
+  "/logo.ico",
+  "/registerSW.js",
+  "/workbox-fa446783.js",
+  "/sw.js",
 
   //   "/dist/assets/CounterView-02abda18.js",
   //   "/dist/assets/CounterView-249271e3.css",
