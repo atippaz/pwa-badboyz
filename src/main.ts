@@ -24,6 +24,7 @@ const app = createApp(App);
 try {
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
+      console.log(window.location.origin);
       navigator.serviceWorker
         .register(`${window.location.origin}/service-worker.js`)
         .then(
