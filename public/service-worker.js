@@ -46,6 +46,8 @@ var urlsToCache = [
 ];
 
 self.addEventListener("install", function (event) {
+  console.log("install");
+
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       console.log("Opened cache", cache);
@@ -55,6 +57,7 @@ self.addEventListener("install", function (event) {
 });
 self.addEventListener("activate", function (event) {
   var cacheWhitelist = ["mywebcache", "other-cache-v1"];
+  console.log("act");
   event.waitUntil(
     caches.keys().then(function (cacheNames) {
       console.log("c", cacheNames);
