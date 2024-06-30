@@ -79,7 +79,9 @@
           </v-card-text>
         </v-card>
       </div>
-      <div v-if="!loading.loadingState.value && data.length == 0">NoData</div>
+      <div v-if="!loading.loadingState.value && data.length == 0 && set.length">
+        NoData
+      </div>
     </div>
   </div>
 </template>
@@ -96,12 +98,12 @@ const loading = inject(loaderPluginSymbol)!;
 const polling = inject(pollingPluginSymbol)!;
 const data = computed(() =>
   _data.value.filter(
-    (e: any) => !search.value || e.roomName.includes(search.value)
+    (e: any) => !search.value || e.teamName.includes(search.value)
   )
 );
 const set = computed(() =>
   _set.value.filter(
-    (e: any) => !search.value || e.roomName.includes(search.value)
+    (e: any) => !search.value || e.teamName.includes(search.value)
   )
 );
 const _data = ref<any>([]);
@@ -115,12 +117,13 @@ async function fetchData() {
   _set.value = await fetch(
     `https://bad-boy-service.vercel.app/set/?roomId=${roomId}`
   ).then((e) => e.json());
+  // console.log(res);
 }
 async function deleteAllTeam() {
   _data.value = await fetch(
     `https://bad-boy-service.vercel.app/deleteRoom/${roomId}`
   ).then((e) => e.json());
-  fetchData();
+  await fetchData();
 }
 onMounted(async () => {
   loading.setLoadingOn();
@@ -129,7 +132,7 @@ onMounted(async () => {
   loading.setLoadingOff();
 });
 onUnmounted(() => {
-  polling.endConnection();
+  // polling.endConnection();
 });
 </script>
 

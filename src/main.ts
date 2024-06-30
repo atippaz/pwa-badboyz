@@ -5,15 +5,15 @@
  */
 
 // Components
-import App from './App.vue'
+import App from "./App.vue";
 
 // Composables
-import { createApp } from 'vue'
+import { createApp } from "vue";
 
 // Plugins
-import { registerPlugins } from '@/plugins'
+import { registerPlugins } from "@/plugins";
 
-const app = createApp(App)
+const app = createApp(App);
 // if ('serviceWorker' in navigator) {
 //     window.addEventListener('load', () => {
 //         navigator.serviceWorker.register('./service-worker.js').then((registration) => {
@@ -21,32 +21,44 @@ const app = createApp(App)
 //         });
 //     });
 // }
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./service-worker.js').then(function (registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function (err) {
-            console.log('ServiceWorker registration failed: ', err);
-        });
-    });
-}
-const registerServiceWorker = async () => {
-    if ("serviceWorker" in navigator) {
-        try {
-            const registration = await navigator.serviceWorker.register("./service-worker.js");
-            if (registration.installing) {
-                console.log("Service worker installing");
-            } else if (registration.waiting) {
-                console.log("Service worker installed");
-            } else if (registration.active) {
-                console.log("Service worker active");
-            }
-        } catch (error) {
-            console.error(`Registration failed with ${error}`);
+try {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/public/service-worker.js").then(
+        function (registration) {
+          console.log(
+            "ServiceWorker registration successful with scope: ",
+            registration.scope
+          );
+        },
+        function (err) {
+          console.log("ServiceWorker registration failed: ", err);
         }
-    }
-};
+      );
+    });
+  }
+} catch (ex) {
+  console.log(ex);
+}
+// const registerServiceWorker = async () => {
+//   if ("serviceWorker" in navigator) {
+//     try {
+//       const registration = await navigator.serviceWorker.register(
+//         "./service-worker.js"
+//       );
+//       if (registration.installing) {
+//         console.log("Service worker installing");
+//       } else if (registration.waiting) {
+//         console.log("Service worker installed");
+//       } else if (registration.active) {
+//         console.log("Service worker active");
+//       }
+//     } catch (error) {
+//       console.error(`Registration failed with ${error}`);
+//     }
+//   }
+// };
 // registerServiceWorker()
-registerPlugins(app)
+registerPlugins(app);
 
-app.mount('#app')
+app.mount("#app");
