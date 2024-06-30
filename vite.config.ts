@@ -32,35 +32,35 @@ export default defineConfig({
         ],
       },
     }),
-    // VitePWA({
-    //   devOptions: {
-    //     enabled: true,
-    //   },
-    //   registerType: "autoUpdate",
-    //   injectRegister: "auto",
-    //   workbox: {
-    //     // กำหนดค่าการตั้งค่าของ Service Worker ตามความต้องการ
-    //     globPatterns: ["**/*.{js,css,html,png}"],
-    //   },
-    //   manifest: {
-    //     // กำหนดค่า manifest ของ PWA ที่คุณต้องการ
-    //     name: "BadBoyz",
-    //     description: "my pwa",
-    //     short_name: "BadBoyz",
-    //     start_url: "./index.html",
-    //     scope: "./index.html",
-    //     display: "standalone",
-    //     background_color: "#ffffff",
-    //     theme_color: "#000000",
-    //     icons: [
-    //       {
-    //         src: "./icon.ico",
-    //         sizes: "128x128",
-    //         type: "image/x-icon",
-    //       },
-    //     ],
-    //   },
-    // }),
+    VitePWA({
+      devOptions: {
+        enabled: true,
+      },
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      workbox: {
+        // กำหนดค่าการตั้งค่าของ Service Worker ตามความต้องการ
+        globPatterns: ["**/*.{js,css,html,png}"],
+      },
+      manifest: {
+        // กำหนดค่า manifest ของ PWA ที่คุณต้องการ
+        name: "BadBoyz",
+        description: "my pwa",
+        short_name: "BadBoyz",
+        start_url: "./index.html",
+        scope: "./index.html",
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#000000",
+        icons: [
+          {
+            src: "./icon.ico",
+            sizes: "128x128",
+            type: "image/x-icon",
+          },
+        ],
+      },
+    }),
   ],
   define: { "process.env": {} },
   resolve: {
