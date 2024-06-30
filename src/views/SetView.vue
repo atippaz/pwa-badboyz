@@ -90,7 +90,7 @@ const roomName = ref();
 const courtNumber = ref(0);
 const teamLimit = ref(0);
 async function deleteTeam() {
-  await fetch(`https://bad-boy-service.vercel.app/deleteTeam/${setId}`).then(
+  await fetch(`https://bad-boy-service.vercel.app/deleteSet/${setId}`).then(
     (e) => e.json()
   );
   router.push({ name: "TeamList" });

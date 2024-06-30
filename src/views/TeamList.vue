@@ -79,7 +79,11 @@
           </v-card-text>
         </v-card>
       </div>
-      <div v-if="!loading.loadingState.value && data.length == 0 && set.length">
+      <div
+        v-if="
+          !loading.loadingState.value && data.length == 0 && set.length == 0
+        "
+      >
         NoData
       </div>
     </div>
@@ -120,9 +124,9 @@ async function fetchData() {
   // console.log(res);
 }
 async function deleteAllTeam() {
-  _data.value = await fetch(
-    `https://bad-boy-service.vercel.app/deleteRoom/${roomId}`
-  ).then((e) => e.json());
+  await fetch(`https://bad-boy-service.vercel.app/deleteRoom/${roomId}`).then(
+    (e) => e.json()
+  );
   await fetchData();
 }
 onMounted(async () => {
