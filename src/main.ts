@@ -36,6 +36,7 @@ try {
           },
           function (err) {
             console.log("ServiceWorker registration failed: ", err);
+            throw new err();
           }
         );
     });
