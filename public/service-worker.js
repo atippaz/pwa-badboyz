@@ -57,6 +57,7 @@ self.addEventListener("activate", function (event) {
   var cacheWhitelist = ["mywebcache", "other-cache-v1"];
   event.waitUntil(
     caches.keys().then(function (cacheNames) {
+      console.log("c", cacheNames);
       return Promise.all(
         cacheNames.map(function (cacheName) {
           if (cacheWhitelist.indexOf(cacheName) === -1) {
@@ -68,6 +69,8 @@ self.addEventListener("activate", function (event) {
   );
 });
 self.addEventListener("fetch", function (event) {
+  console.log("e", event);
+
   event.respondWith(
     caches.match(event.request).then(function (response) {
       console.log("Cache hit - return response");
