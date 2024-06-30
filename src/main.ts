@@ -21,29 +21,29 @@ const app = createApp(App);
 //         });
 //     });
 // }
-try {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function () {
-      console.log(window.location.origin);
-      navigator.serviceWorker
-        .register(`${window.location.origin}/service-worker.js`)
-        .then(
-          function (registration) {
-            console.log(
-              "ServiceWorker registration successful with scope: ",
-              registration.scope
-            );
-          },
-          function (err) {
-            console.log("ServiceWorker registration failed: ", err);
-            throw new err();
-          }
-        );
-    });
-  }
-} catch (ex) {
-  console.log(ex);
-}
+// try {
+//   if ("serviceWorker" in navigator) {
+//     window.addEventListener("load", function () {
+//       console.log(window.location.origin);
+//       navigator.serviceWorker
+//         .register(`${window.location.origin}/service-worker.js`)
+//         .then(
+//           function (registration) {
+//             console.log(
+//               "ServiceWorker registration successful with scope: ",
+//               registration.scope
+//             );
+//           },
+//           function (err) {
+//             console.log("ServiceWorker registration failed: ", err);
+//             throw new err();
+//           }
+//         );
+//     });
+//   }
+// } catch (ex) {
+//   console.log(ex);
+// }
 // const registerServiceWorker = async () => {
 //   if ("serviceWorker" in navigator) {
 //     try {
