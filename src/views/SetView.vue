@@ -72,58 +72,28 @@
 
 <script setup lang="ts">
 import CardVersus from "@/components/page/teamListView/CardTeamVersus.vue";
-import { computed, onMounted, ref, inject } from "vue";
-import { pageStatePluginSymbol } from "@/plugins/pageState";
+import useMatchSetApi from "@/composables/useApi/useMatchSetApi";
+import { onMounted, ref, inject } from "vue";
 import { useRoute } from "vue-router";
-import router from "@/router";
-const route = useRoute();
-const pageState = inject(pageStatePluginSymbol)!;
-const roomId = route.params.roomId;
-const setId = route.params.setId;
-const teams = ref<any>([]);
 import { loaderPluginSymbol } from "@/plugins/loading";
+import router from "@/router";
+
+const route = useRoute();
+const matchSetApi = useMatchSetApi();
 const loading = inject(loaderPluginSymbol)!;
+
+const setId = route.params.setId as string;
+
 const set = ref<any>([]);
-const nextTeam = ref<any>([]);
-const courtTeam = ref<any>([]);
 const roomName = ref();
 const courtNumber = ref(0);
 const teamLimit = ref(0);
+
 async function deleteTeam() {
-  await fetch(`https://bad-boy-service.vercel.app/deleteSet/${setId}`).then(
-    (e) => e.json()
-  );
+  await matchSetApi.deleteSetById(setId as string);
   router.push({ name: "TeamList" });
 }
-onMounted(async () => {
-  try {
-    loading.setLoadingOn();
 
-    // if (!setId) throw new Error("");
-
-    const data = await fetch(
-      "https://bad-boy-service.vercel.app/set/" + setId
-    ).then((e) => e.json());
-    console.log(data);
-    // if (!data) throw new Error("");
-
-    roomName.value = data.teamName;
-    courtNumber.value = data.courtNumber;
-    teamLimit.value = data.teamLimit;
-    setTeam(data);
-    loading.setLoadingOff();
-
-    // if (!court.value) {
-    // } else {
-    //     pageState.setCreateRoomTeam()
-    // }
-  } catch (e) {
-    console.log(e);
-    alert("เกิดข้อผิดพลาด");
-    // router.push({ name: "Room", params: { roomId: roomId } });
-    loading.setLoadingOff();
-  }
-});
 function setTeam(_team: any) {
   _team.allTeam.forEach((team: any) => {
     const needTeam = courtNumber.value * 2;
@@ -146,6 +116,32 @@ function setTeam(_team: any) {
     set.value.push({ courtTeam: courtTeam, nextTeam: nextTeam });
   });
 }
+onMounted(async () => {
+  try {
+    loading.setLoadingOn();
+
+    // if (!setId) throw new Error("");
+    const data = await matchSetApi.getSetById(setId);
+    console.log(data);
+    // if (!data) throw new Error("");
+
+    roomName.value = data.teamName;
+    courtNumber.value = data.courtNumber;
+    teamLimit.value = data.teamLimit;
+    setTeam(data);
+    loading.setLoadingOff();
+
+    // if (!court.value) {
+    // } else {
+    //     pageState.setCreateRoomTeam()
+    // }
+  } catch (e) {
+    console.log(e);
+    alert("เกิดข้อผิดพลาด");
+    // router.push({ name: "Room", params: { roomId: roomId } });
+    loading.setLoadingOff();
+  }
+});
 </script>
 <style scoped lang="scss">
 .trunt-word {

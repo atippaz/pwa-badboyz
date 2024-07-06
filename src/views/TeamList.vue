@@ -91,15 +91,14 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, inject, onUnmounted } from "vue";
+import { onMounted, ref, computed, inject } from "vue";
 import { loaderPluginSymbol } from "@/plugins/loading";
-import { pollingPluginSymbol } from "@/plugins/pollingEvent";
 import { useRoute } from "vue-router";
-
+import useRoomApi from "@/composables/useApi/useRoomApi";
+const roomApi = useRoomApi();
 const route = useRoute();
-const roomId = route.params.roomId;
+const roomId = route.params.roomId as string;
 const loading = inject(loaderPluginSymbol)!;
-const polling = inject(pollingPluginSymbol)!;
 const data = computed(() =>
   _data.value.filter(
     (e: any) => !search.value || e.teamName.includes(search.value)
@@ -115,28 +114,18 @@ const _set = ref<any>([]);
 
 const search = ref("");
 async function fetchData() {
-  _data.value = await fetch(
-    `https://bad-boy-service.vercel.app/team/?roomId=${roomId}`
-  ).then((e) => e.json());
-  _set.value = await fetch(
-    `https://bad-boy-service.vercel.app/set/?roomId=${roomId}`
-  ).then((e) => e.json());
-  // console.log(res);
+  const { match, set } = await roomApi.getAllMatchAndMatchSetInRoom(roomId);
+  _data.value = match;
+  _set.value = set;
 }
 async function deleteAllTeam() {
-  await fetch(`https://bad-boy-service.vercel.app/deleteRoom/${roomId}`).then(
-    (e) => e.json()
-  );
+  await roomApi.deleteRoomById(roomId);
   await fetchData();
 }
 onMounted(async () => {
   loading.setLoadingOn();
   await fetchData();
-  // polling.startConection(fetchData)
   loading.setLoadingOff();
-});
-onUnmounted(() => {
-  // polling.endConnection();
 });
 </script>
 

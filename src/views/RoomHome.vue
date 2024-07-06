@@ -49,14 +49,6 @@
         </v-btn>
         <v-toolbar-title>Create Room</v-toolbar-title>
         <v-spacer></v-spacer>
-        <!-- <v-toolbar-items>
-            <v-btn
-              variant="text"
-              @click="dialog = false"
-            >
-              Save
-            </v-btn>
-          </v-toolbar-items> -->
       </v-toolbar>
       <div class="pa-4">
         <div class="">
@@ -90,7 +82,7 @@ import { onMounted, ref, computed, inject, onUnmounted } from "vue";
 import { loaderPluginSymbol } from "@/plugins/loading";
 import { pollingPluginSymbol } from "@/plugins/pollingEvent";
 import router from "@/router";
-import { useRoomApi } from "@/composables/useApi";
+import useRoomApi from "@/composables/useApi/useRoomApi";
 const roomApi = useRoomApi();
 const dialog = ref(false);
 const roomName = ref("");

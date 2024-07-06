@@ -1,33 +1,55 @@
-export default function (baseUrl: string) {
+import useApi from "./baseApi";
+import useMatchApi from "./useMatchApi";
+import useMatchSetApi from "./useMatchSetApi";
+
+interface RoomInsertModel {
+  roomName: string;
+  allTeam: [];
+  teamLimit: number;
+  winScore: number;
+  winStreak: number;
+  courtNumber: number;
+}
+export default function useRoomApi() {
+  const api = useApi();
   const controller = "room";
   async function createRoom(payload: {
     roomName: string;
     description: string;
   }) {
-    const data = await fetch(`${baseUrl}/${controller}`, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload), // body data type must match "Content-Type" header
-    }).then((e) => e.json());
+    const data = await api.post<{ id: string }>({ url: controller, payload });
     return data;
   }
   async function getRoomById(roomId: string) {
-    const data = await fetch(`${baseUrl}/${controller}/${roomId}`).then((e) =>
-      e.json()
-    );
+    const data = await api.get({ url: `${controller}`, id: roomId });
     return data;
   }
   async function getAllRoom() {
-    const data = await fetch("https://bad-boy-service.vercel.app/room").then(
-      (e) => e.json()
-    );
+    const data = await api.get({
+      url: controller,
+    });
+    return data;
+  }
+  async function getAllMatchAndMatchSetInRoom(roomId: string) {
+    const { getAllByRoomId: match } = useMatchApi();
+    const { getAllByRoomId: set } = useMatchSetApi();
+
+    const matchResult = await match(roomId);
+    const setResult = await set(roomId);
+    return { match: matchResult, set: setResult };
+  }
+  async function deleteRoomById(roomid: string) {
+    const data = await api.get({
+      url: "deleteRoom",
+      id: roomid,
+    });
     return data;
   }
   return {
     createRoom,
     getRoomById,
+    getAllMatchAndMatchSetInRoom,
     getAllRoom,
+    deleteRoomById,
   };
 }

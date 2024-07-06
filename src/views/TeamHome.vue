@@ -19,7 +19,7 @@
                   placeholder="team name"
                 ></v-text-field>
               </div>
-              <div :class="{}">
+              <div>
                 <div>
                   <div class="d-flex justify-space-between align-center mb-2">
                     <div class="mb-1 text-gray-text" style="font-size: 18px">
@@ -186,39 +186,24 @@
         </v-container>
       </div>
     </div>
-    <!-- <v-btn style="position: fixed; bottom: 80px; right: 16px; z-index: 300" @click="createTeam"
-       >
-        สร้างทีม
-      </v-btn> -->
   </div>
 </template>
 <script setup lang="ts">
-import { useTeamStore } from "@/store/team";
-import { useCourtStore } from "@/store/court";
 import TeamAdvanceSetting from "@/components/page/randomTeam/AdvanceSetting.vue";
 import router from "@/router";
-import type { TeamMember } from "@/store/team";
-import { storeToRefs } from "pinia";
-import { onMounted, ref, computed, inject, watch } from "vue";
+import { onMounted, ref, inject, watch } from "vue";
 import { loaderPluginSymbol } from "@/plugins/loading";
 import { useRoute } from "vue-router";
 const paringSet = ref<boolean>(false);
 const showAdvanceSetting = ref(false);
 const setName = ref("");
 const teamLimittParing = ref<number>(1);
-const { setTeamLimit, addTeamMember, resetTeam, addNewTeam, setTeam } =
-  useTeamStore();
-const { setCourtNumber, setWinScore, setWinStreak } = useCourtStore();
-const { teamMember, teamState } = storeToRefs(useTeamStore());
-const openSat = computed(() => saturdayMember.value.length != 0);
-const openSun = computed(() => sundayMember.value.length != 0);
+
 interface TeamLock {
   teamId: number;
   teamMember: string[];
 }
-// const teamLockList = computed(() => teamLocks.value);
 const teamLocks = ref<TeamLock[]>([]);
-const textTwoDay = ref("");
 const courtNumber = ref(
   isNaN(parseInt(localStorage.getItem("courtNumber") ?? ""))
     ? 1
@@ -243,28 +228,19 @@ teamLocks.value =
   localStorage.getItem("teamLock") != null
     ? JSON.parse(localStorage.getItem("teamLock")!)
     : [];
-const openCopyDay = ref(false);
 const textTeam = ref(localStorage.getItem("textTeam") ?? "");
 const member = ref<string[]>([]);
-const saturdayMember = ref("");
-const sundayMember = ref("");
 const loading = inject(loaderPluginSymbol)!;
 const roomData = ref();
 const route = useRoute();
 const roomId = route.params.roomId;
 localStorage.setItem("roomId", roomId.toString());
-watch(
-  () => textTwoDay.value,
-  (newValue) => {
-    openCopyDay.value = false;
-  }
-);
+
 onMounted(async () => {
   loading.setLoadingOn();
   roomData.value = await fetch(
     `https://bad-boy-service.vercel.app/room/${roomId}`
   ).then((e) => e.json());
-  //   polling.startConection(fetchData)
   setMember();
   loading.setLoadingOff();
 });
@@ -295,17 +271,6 @@ function deleteAllData() {
   textTeam.value = "";
   teamLocks.value = [];
 }
-function getFormat() {
-  navigator.clipboard.writeText(`ตีแบดวันเสาร์ xx.xx-xx.xx
-1.xxx
-2.xxxx
---------
-
-ตีแบดวันอาทิตย์ xx.xx-xx.xx
-1.xxx
-2.xxxx
-`);
-}
 
 function SplitTeam(): string[] | null {
   try {
@@ -326,11 +291,6 @@ function SplitTeam(): string[] | null {
   }
 }
 
-function generateMember() {
-  return textTeam.value.split("\n").length > 0
-    ? textTeam.value.trim().split("\n")
-    : [];
-}
 function shufferMember(member: string[]) {
   for (let i = member.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -338,17 +298,7 @@ function shufferMember(member: string[]) {
   }
   return member;
 }
-function shufferTeam(team: TeamMember[]) {
-  const allTeam: string[][] = [];
-  team.forEach((e) => {
-    allTeam.push(e.member);
-  });
-  console.log("suffer");
-  const result = allTeam.slice().sort(() => Math.random() - 0.5);
-  console.log(result);
 
-  return result;
-}
 watch(
   () => teamLimit.value,
   (value) => {
@@ -362,19 +312,7 @@ watch(
     teamLocks.value = removeItem;
   }
 );
-function resetTextTeam() {
-  localStorage.removeItem("textTeam");
-  localStorage.removeItem("courtNumber");
-  localStorage.removeItem("winScore");
-  localStorage.removeItem("winStreak");
-  localStorage.removeItem("teamLimit");
-  localStorage.removeItem("newbiesUser");
-  textTeam.value = "";
-  courtNumber.value = 1;
-  winScore.value = 15;
-  winStreak.value = 2;
-  teamLimit.value = 2;
-}
+
 function setMember() {
   const team = SplitTeam();
   if (!team) {
@@ -412,33 +350,14 @@ async function createTeam() {
     );
     return;
   }
-  // showAdvanceSetting.value = false
-  // isActive.value = false
+
   localStorage.setItem("textTeam", textTeam.value);
   localStorage.setItem("courtNumber", courtNumber.value.toString());
   localStorage.setItem("winScore", winScore.value.toString());
   localStorage.setItem("winStreak", winStreak.value.toString());
   localStorage.setItem("teamLimit", teamLimit.value.toString());
   localStorage.setItem("teamLock", JSON.stringify(teamLocks.value));
-  // setCourtNumber(courtNumber.value);
-  // resetTeam();
-  // setTeamLimit(teamLimit.value);
-  // setWinScore(winScore.value);
-  // setWinStreak(winStreak.value);
-
   member.value = shufferMember(member.value);
-  member.value.forEach((player) => {
-    // addTeamMember(player);
-  });
-  teamLocks.value.forEach((e) => {
-    // addNewTeam(e.teamMember);
-  });
-  console.log(teamLocks.value);
-
-  // const _team = teamState.value;
-  // const sufferTeam = shufferTeam(_team);
-  // setTeam(sufferTeam);
-
   const payload = {
     setName: setName.value,
     members: member.value,
@@ -453,32 +372,19 @@ async function createTeam() {
       limitSet: teamLimittParing.value,
     },
   };
-  console.log(payload);
   const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload), // body data type must match "Content-Type" header
+    body: JSON.stringify(payload),
   }).then((e) => e.json());
-  console.log(data);
   if (data.isSet) {
     console.log(data);
     router.push({ name: "SetView", params: { setId: data.id } });
   } else {
     router.push({ name: "TeamView", params: { teamId: data.id } });
   }
-  // const data = await fetch(`https://bad-boy-service.vercel.app/team`, {
-  //   method: "POST", // *GET, POST, PUT, DELETE, etc.
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(payload), // body data type must match "Content-Type" header
-  // }).then((e) => e.json());
-  // if (!data) return;
-  // console.log(data);
-
-  // router.push({ name: "TeamView", params: { teamId: data.id } });
 }
 </script>
 <style scoped lang="scss">
