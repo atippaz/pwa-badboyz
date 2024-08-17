@@ -1,12 +1,17 @@
 <template>
-  <div class="h-100">
+  <div class="h-100 d-flex flex-column">
     <div class="d-flex justify-space-between">
       <div>
         <h1>ห้อง : {{ roomName }}</h1>
       </div>
       <v-btn @click="deleteTeam"> ลบห้อง</v-btn>
     </div>
-    <v-carousel hide-delimiters :model-value="set ? 0 : null" class="h-100">
+    <v-carousel
+      hide-delimiter-background
+      :show-arrows="false"
+      :model-value="set ? 0 : null"
+      class="h-100"
+    >
       <v-carousel-item v-for="(item, i) in set">
         <div>
           <div class="mb-2" style="font-size: 20px; font-weight: bold">
