@@ -10,10 +10,10 @@
       hide-delimiter-background
       :show-arrows="false"
       :model-value="set ? 0 : null"
-      class="h-100"
+      class="h-100 pb-15"
     >
-      <v-carousel-item v-for="(item, i) in set">
-        <div>
+      <v-carousel-item v-for="(item, i) in set" class="h-100">
+        <div class="h-100">
           <div class="mb-2" style="font-size: 20px; font-weight: bold">
             ทีมปัจจุบัน
           </div>
