@@ -358,6 +358,9 @@ async function createTeam() {
   localStorage.setItem("teamLimit", teamLimit.value.toString());
   localStorage.setItem("teamLock", JSON.stringify(teamLocks.value));
   member.value = shufferMember(member.value);
+  if (member.value.length % 2 != 0) {
+    member.value.push("");
+  }
   const payload = {
     setName: setName.value,
     members: member.value,
