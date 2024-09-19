@@ -73,6 +73,10 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/advice",
+    component: () => import("@/views/Advice.vue"),
+  },
 ];
 
 const router = createRouter({

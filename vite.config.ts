@@ -44,9 +44,9 @@ export default defineConfig({
       },
       manifest: {
         // กำหนดค่า manifest ของ PWA ที่คุณต้องการ
-        name: "BadBoyz",
+        name: "Rackoo",
         description: "my pwa",
-        short_name: "BadBoyz",
+        short_name: "Rackoo",
         start_url: "./index.html",
         scope: "./index.html",
         display: "standalone",

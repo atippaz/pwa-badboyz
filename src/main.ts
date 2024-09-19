@@ -6,7 +6,7 @@
 
 // Components
 import App from "./App.vue";
-
+import { MotionPlugin } from "@vueuse/motion";
 // Composables
 import { createApp } from "vue";
 
@@ -14,6 +14,7 @@ import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
 
 const app = createApp(App);
+app.use(MotionPlugin);
 // if ('serviceWorker' in navigator) {
 //     window.addEventListener('load', () => {
 //         navigator.serviceWorker.register('./service-worker.js').then((registration) => {

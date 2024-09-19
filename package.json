@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@vueuse/motion": "^2.2.5",
     "core-js": "^3.29.0",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
@@ -23,8 +24,8 @@
   "devDependencies": {
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
-    "@vitejs/plugin-vue": "^4.0.0",
     "@types/webfontloader": "^1.6.35",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.22.0",
     "eslint-plugin-vue": "^9.3.0",
